@@ -5,13 +5,43 @@
  * Copyright (c) 2014 Steven Bassett <steven.j.bassett@gmail.com>
  * Licensed under the MIT license.
  */
-
-(function(exports) {
+/* global require */
+/* global module */
+(function(exports, $) {
 
   'use strict';
 
-  exports.awesome = function() {
-    return 'awesome';
+
+
+  /**
+   * Adds the vent listners to any of the the carousels.
+   */
+  var bootstrapCarouselSwipe = function() {
+    return $(function(){
+      var Hammer = require('hammerjs');
+      var carousel = $('.carousel.slide');
+      carousel.each(function() {
+
+        var carouselSwipe = new Hammer(this);
+        // Preserve this for function.
+        var element = this;
+        
+        // Add the swipe right event listner.
+        carouselSwipe.on('swiperight', function() {
+          $(element).carousel('prev');
+        });
+
+        // Add the swipe left event listner.
+        carouselSwipe.on('swipeleft', function() {
+          $(element).carousel('next');
+        });
+
+      });
+
+    });
+
   };
 
-}(typeof exports === 'object' && exports || this));
+  module.exports = bootstrapCarouselSwipe;
+
+}(typeof exports === 'object' && exports || this, jQuery));
